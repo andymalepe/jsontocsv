@@ -2,6 +2,7 @@ import json
 import time
 import sys
 import pandas
+import math 
 
 if len(sys.argv) >= 2:
     file=sys.argv[1]
@@ -18,6 +19,7 @@ if len(sys.argv) >= 2:
             json.dump(data, jsonfile, indent=None)
         #Read json file using Pandas into a dataframe object
         pandasObject=pandas.read_json(jsonDumpFile, orient='records')
+        filtered=df[!math.isnan(df['dst_ip'])]
         #Convert Pandas dataframe to csv
         pandasObject.to_csv(dumpFilename+'.csv', index=False)
     else: print('Input file is not a JSON file')
