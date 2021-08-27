@@ -2,7 +2,6 @@ import json
 import time
 import sys
 import pandas
-import math 
 
 if len(sys.argv) >= 2:
     file=sys.argv[1]
@@ -18,9 +17,12 @@ if len(sys.argv) >= 2:
         with open(jsonDumpFile, 'w') as jsonfile:
             json.dump(data, jsonfile, indent=None)
         #Read json file using Pandas into a dataframe object
-        pandasObject=pandas.read_json(jsonDumpFile, orient='records')
-        filtered=df[!math.isnan(df['dst_ip'])]
-        #Convert Pandas dataframe to csv
-        pandasObject.to_csv(dumpFilename+'.csv', index=False)
+        pandasDataFrame=pandas.read_json(jsonDumpFile, orient='records')
+        #Output all file columns
+        #print(pandasDataFrame.columns)
+        #Keep specific columns
+        filteredDataFrame=pandasDataFrame.filter(items=['eventid', 'timestamp', 'src_ip', 'dst_ip', 'session', 'duration', 'messagee'])
+        #Convert Pfiltered dataframe to csv
+        filteredDataFrame.to_csv(dumpFilename+'.csv', index=False)
     else: print('Input file is not a JSON file')
 else: print('No terminal input json file')
